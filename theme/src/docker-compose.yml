@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  ghost:
+    image: ghost:2.31.1
+    container_name: ghost
+    volumes:
+      - ./..:/var/lib/ghost/content/themes/liebling
+      - ./ghost.db:/var/lib/ghost/content/data/ghost.db
+    environment:
+      - NODE_ENV=development
+    ports:
+      - 2368:2368
+  node:
+    build: .
+    container_name: node
+    working_dir: /code/src
+    command: "node node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    links:
+      - ghost
+    volumes:
+      - ./../:/code
+    environment:
+      - NODE_ENV=development
+    ports:
+      - 80:3000
+      - 81:3001

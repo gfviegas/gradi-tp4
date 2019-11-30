@@ -1,0 +1,28 @@
+version: "3"
+
+networks:
+  ghost-network:
+    driver: "bridge"
+
+services:
+  ghost:
+    image: ghost:2.31
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - ghost-network
+    ports:
+     - "2368:2368"
+    volumes:
+     - ./ghost/web:/var/lib/ghost/content
+    env_file:
+      - ./ghost/.env
+
+  db:
+    image: mysql:5.7
+    networks:
+      - ghost-network
+    environment:
+      MYSQL_ROOT_PASSWORD: xablau123
