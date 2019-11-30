@@ -5,6 +5,15 @@ networks:
     driver: "bridge"
 
 services:
+  plone:
+    image: plone
+    volumes:
+      - data:/data
+    ports:
+      - 8080:8080
+    environment:
+      - ZEO_SHARED_BLOB_DIR='on'
+
   ghost:
     image: ghost:2.31
     depends_on:
@@ -26,3 +35,6 @@ services:
       - ghost-network
     environment:
       MYSQL_ROOT_PASSWORD: xablau123
+
+volumes:
+  data:
